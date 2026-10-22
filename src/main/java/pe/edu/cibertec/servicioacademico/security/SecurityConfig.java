@@ -1,5 +1,6 @@
 package pe.edu.cibertec.servicioacademico.security;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,6 +32,25 @@ public class SecurityConfig {
                                 "/error"
                         ).permitAll()
                         .anyRequest().authenticated()
+                )
+
+                .exceptionHandling(exception -> exception
+
+                        .authenticationEntryPoint(
+                                (request, response, authException) ->
+                                        response.sendError(
+                                                HttpServletResponse.SC_UNAUTHORIZED,
+                                                "No autenticado"
+                                        )
+                        )
+
+                        .accessDeniedHandler(
+                                (request, response, accessDeniedException) ->
+                                        response.sendError(
+                                                HttpServletResponse.SC_FORBIDDEN,
+                                                "Acceso denegado"
+                                        )
+                        )
                 )
 
                 .sessionManagement(session -> session
