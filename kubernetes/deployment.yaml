@@ -18,12 +18,16 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8082
+
           env:
             - name: CONFIG_SERVER_URL
               value: http://servidor-configuracion-service:8888
 
             - name: EUREKA_URL
               value: http://servidor-discovery-service:8761/eureka/
+
+            - name: EUREKA_INSTANCE_HOSTNAME
+              value: servicio-academico-service
 
             - name: DB_URL
               value: jdbc:mysql://host.docker.internal:3306/lms_academico
