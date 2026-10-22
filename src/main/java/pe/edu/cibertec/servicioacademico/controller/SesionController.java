@@ -8,6 +8,7 @@ import pe.edu.cibertec.servicioacademico.model.Sesion;
 import pe.edu.cibertec.servicioacademico.service.SesionService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/sesiones")
@@ -47,6 +48,41 @@ public class SesionController {
     ) {
         return ResponseEntity.ok(
                 sesionService.registrarSesion(dto)
+        );
+    }
+
+    @PutMapping("/{idSesion}")
+    public ResponseEntity<Sesion> actualizarSesion(
+            @PathVariable Integer idSesion,
+            @RequestBody SesionDto dto
+    ) {
+        return ResponseEntity.ok(
+                sesionService.actualizarSesion(idSesion, dto)
+        );
+    }
+
+    @DeleteMapping("/{idSesion}")
+    public ResponseEntity<Map<String, String>> eliminarSesion(
+            @PathVariable Integer idSesion
+    ) {
+
+        sesionService.eliminarSesion(idSesion);
+
+        return ResponseEntity.ok(
+                Map.of(
+                        "mensaje",
+                        "Sesión eliminada correctamente"
+                )
+        );
+    }
+
+    @PatchMapping("/{idSesion}")
+    public ResponseEntity<Sesion> actualizarParcialmente(
+            @PathVariable Integer idSesion,
+            @RequestBody SesionDto dto
+    ) {
+        return ResponseEntity.ok(
+                sesionService.actualizarParcialmente(idSesion, dto)
         );
     }
 }

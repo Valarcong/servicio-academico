@@ -7,6 +7,7 @@ import pe.edu.cibertec.servicioacademico.model.Curso;
 import pe.edu.cibertec.servicioacademico.service.CursoService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/cursos")
@@ -54,11 +55,17 @@ public class CursoController {
     }
 
     @DeleteMapping("/{idCurso}")
-    public ResponseEntity<Void> eliminarCurso(
+    public ResponseEntity<Map<String, String>> eliminarCurso(
             @PathVariable Integer idCurso
     ) {
+
         cursoService.eliminarCurso(idCurso);
 
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(
+                Map.of(
+                        "mensaje",
+                        "Curso eliminado correctamente"
+                )
+        );
     }
 }

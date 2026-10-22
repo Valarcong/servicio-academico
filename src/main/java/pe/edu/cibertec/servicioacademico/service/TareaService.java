@@ -55,4 +55,67 @@ public class TareaService {
 
         return tareaRepository.save(tarea);
     }
+
+    public Tarea actualizarTarea(
+            Integer idTarea,
+            TareaDto dto
+    ) {
+
+        Tarea tarea = obtenerTareaPorId(idTarea);
+
+        AsignacionDocente asignacion =
+                asignacionDocenteService.obtenerAsignacionPorId(
+                        dto.getIdAsignacion()
+                );
+
+        tarea.setAsignacionDocente(asignacion);
+        tarea.setTitulo(dto.getTitulo());
+        tarea.setDescripcion(dto.getDescripcion());
+        tarea.setFechaPublicacion(dto.getFechaPublicacion());
+        tarea.setFechaEntrega(dto.getFechaEntrega());
+
+        return tareaRepository.save(tarea);
+    }
+
+    public Tarea actualizarParcialmente(
+            Integer idTarea,
+            TareaDto dto
+    ) {
+
+        Tarea tarea = obtenerTareaPorId(idTarea);
+
+        if (dto.getIdAsignacion() != null) {
+            AsignacionDocente asignacion =
+                    asignacionDocenteService.obtenerAsignacionPorId(
+                            dto.getIdAsignacion()
+                    );
+
+            tarea.setAsignacionDocente(asignacion);
+        }
+
+        if (dto.getTitulo() != null) {
+            tarea.setTitulo(dto.getTitulo());
+        }
+
+        if (dto.getDescripcion() != null) {
+            tarea.setDescripcion(dto.getDescripcion());
+        }
+
+        if (dto.getFechaPublicacion() != null) {
+            tarea.setFechaPublicacion(dto.getFechaPublicacion());
+        }
+
+        if (dto.getFechaEntrega() != null) {
+            tarea.setFechaEntrega(dto.getFechaEntrega());
+        }
+
+        return tareaRepository.save(tarea);
+    }
+
+    public void eliminarTarea(Integer idTarea) {
+
+        Tarea tarea = obtenerTareaPorId(idTarea);
+
+        tareaRepository.delete(tarea);
+    }
 }

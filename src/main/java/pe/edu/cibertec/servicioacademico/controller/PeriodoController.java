@@ -7,6 +7,7 @@ import pe.edu.cibertec.servicioacademico.model.Periodo;
 import pe.edu.cibertec.servicioacademico.service.PeriodoService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/periodos")
@@ -54,11 +55,17 @@ public class PeriodoController {
     }
 
     @DeleteMapping("/{idPeriodo}")
-    public ResponseEntity<Void> eliminarPeriodo(
+    public ResponseEntity<Map<String, String>> eliminarPeriodo(
             @PathVariable Integer idPeriodo
     ) {
+
         periodoService.eliminarPeriodo(idPeriodo);
 
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(
+                Map.of(
+                        "mensaje",
+                        "Periodo eliminado correctamente"
+                )
+        );
     }
 }

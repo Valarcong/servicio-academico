@@ -60,4 +60,66 @@ public class AsignacionDocenteService {
 
         return asignacionDocenteRepository.save(asignacion);
     }
+
+    public AsignacionDocente actualizarAsignacion(
+            Integer idAsignacion,
+            AsignacionDocenteDto dto
+    ) {
+
+        AsignacionDocente asignacion =
+                obtenerAsignacionPorId(idAsignacion);
+
+        Curso curso = cursoService.obtenerCursoPorId(
+                dto.getIdCurso()
+        );
+
+        Periodo periodo = periodoService.obtenerPeriodoPorId(
+                dto.getIdPeriodo()
+        );
+
+        asignacion.setCurso(curso);
+        asignacion.setPeriodo(periodo);
+        asignacion.setIdDocente(dto.getIdDocente());
+
+        return asignacionDocenteRepository.save(asignacion);
+    }
+
+    public void eliminarAsignacion(Integer idAsignacion) {
+
+        AsignacionDocente asignacion =
+                obtenerAsignacionPorId(idAsignacion);
+
+        asignacionDocenteRepository.delete(asignacion);
+    }
+
+    public AsignacionDocente actualizarParcialmente(
+            Integer idAsignacion,
+            AsignacionDocenteDto dto
+    ) {
+
+        AsignacionDocente asignacion =
+                obtenerAsignacionPorId(idAsignacion);
+
+        if (dto.getIdCurso() != null) {
+            Curso curso = cursoService.obtenerCursoPorId(
+                    dto.getIdCurso()
+            );
+
+            asignacion.setCurso(curso);
+        }
+
+        if (dto.getIdPeriodo() != null) {
+            Periodo periodo = periodoService.obtenerPeriodoPorId(
+                    dto.getIdPeriodo()
+            );
+
+            asignacion.setPeriodo(periodo);
+        }
+
+        if (dto.getIdDocente() != null) {
+            asignacion.setIdDocente(dto.getIdDocente());
+        }
+
+        return asignacionDocenteRepository.save(asignacion);
+    }
 }

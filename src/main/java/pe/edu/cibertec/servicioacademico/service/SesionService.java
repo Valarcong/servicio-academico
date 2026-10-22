@@ -55,4 +55,71 @@ public class SesionService {
 
         return sesionRepository.save(sesion);
     }
+
+    public Sesion actualizarSesion(
+            Integer idSesion,
+            SesionDto dto
+    ) {
+
+        Sesion sesion = obtenerSesionPorId(idSesion);
+
+        AsignacionDocente asignacion =
+                asignacionDocenteService.obtenerAsignacionPorId(
+                        dto.getIdAsignacion()
+                );
+
+        sesion.setAsignacionDocente(asignacion);
+        sesion.setNumeroSesion(dto.getNumeroSesion());
+        sesion.setTitulo(dto.getTitulo());
+        sesion.setDescripcion(dto.getDescripcion());
+        sesion.setFecha(dto.getFecha());
+
+        return sesionRepository.save(sesion);
+    }
+
+    public void eliminarSesion(Integer idSesion) {
+
+        Sesion sesion = obtenerSesionPorId(idSesion);
+
+        sesionRepository.delete(sesion);
+    }
+
+    public Sesion actualizarParcialmente(
+            Integer idSesion,
+            SesionDto dto
+    ) {
+
+        Sesion sesion = obtenerSesionPorId(idSesion);
+
+        if (dto.getIdAsignacion() != null) {
+            AsignacionDocente asignacion =
+                    asignacionDocenteService.obtenerAsignacionPorId(
+                            dto.getIdAsignacion()
+                    );
+
+            sesion.setAsignacionDocente(asignacion);
+        }
+
+        if (dto.getNumeroSesion() != null) {
+            sesion.setNumeroSesion(dto.getNumeroSesion());
+        }
+
+        if (dto.getTitulo() != null) {
+            sesion.setTitulo(dto.getTitulo());
+        }
+
+        if (dto.getDescripcion() != null) {
+            sesion.setDescripcion(dto.getDescripcion());
+        }
+
+        if (dto.getFecha() != null) {
+            sesion.setFecha(dto.getFecha());
+        }
+
+        return sesionRepository.save(sesion);
+    }
+
+
+
+
 }
