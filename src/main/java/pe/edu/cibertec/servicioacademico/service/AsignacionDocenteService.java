@@ -122,4 +122,22 @@ public class AsignacionDocenteService {
 
         return asignacionDocenteRepository.save(asignacion);
     }
+
+    public AsignacionDocente validarAsignacionDelDocente(
+            Integer idAsignacion,
+            Integer idDocente
+    ) {
+
+        AsignacionDocente asignacion =
+                obtenerAsignacionPorId(idAsignacion);
+
+        if (!asignacion.getIdDocente().equals(idDocente)) {
+            throw new ResponseStatusException(
+                    HttpStatus.FORBIDDEN,
+                    "No tiene acceso a esta asignación"
+            );
+        }
+
+        return asignacion;
+    }
 }

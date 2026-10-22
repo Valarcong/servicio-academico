@@ -3,6 +3,7 @@ package pe.edu.cibertec.servicioacademico.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 import pe.edu.cibertec.servicioacademico.model.Periodo;
 import pe.edu.cibertec.servicioacademico.service.PeriodoService;
 
@@ -17,6 +18,7 @@ public class PeriodoController {
     private final PeriodoService periodoService;
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     public ResponseEntity<List<Periodo>> listarPeriodos() {
         return ResponseEntity.ok(
                 periodoService.listarPeriodos()
@@ -24,6 +26,7 @@ public class PeriodoController {
     }
 
     @GetMapping("/{idPeriodo}")
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     public ResponseEntity<Periodo> obtenerPeriodoPorId(
             @PathVariable Integer idPeriodo
     ) {
@@ -33,6 +36,7 @@ public class PeriodoController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     public ResponseEntity<Periodo> registrarPeriodo(
             @RequestBody Periodo periodo
     ) {
@@ -42,6 +46,7 @@ public class PeriodoController {
     }
 
     @PutMapping("/{idPeriodo}")
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     public ResponseEntity<Periodo> actualizarPeriodo(
             @PathVariable Integer idPeriodo,
             @RequestBody Periodo periodo
@@ -55,6 +60,7 @@ public class PeriodoController {
     }
 
     @DeleteMapping("/{idPeriodo}")
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     public ResponseEntity<Map<String, String>> eliminarPeriodo(
             @PathVariable Integer idPeriodo
     ) {

@@ -3,8 +3,10 @@ package pe.edu.cibertec.servicioacademico.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 import pe.edu.cibertec.servicioacademico.model.Curso;
 import pe.edu.cibertec.servicioacademico.service.CursoService;
+
 
 import java.util.List;
 import java.util.Map;
@@ -16,7 +18,9 @@ public class CursoController {
 
     private final CursoService cursoService;
 
+
     @GetMapping
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     public ResponseEntity<List<Curso>> listarCursos() {
         return ResponseEntity.ok(
                 cursoService.listarCursos()
@@ -24,6 +28,7 @@ public class CursoController {
     }
 
     @GetMapping("/{idCurso}")
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     public ResponseEntity<Curso> obtenerCursoPorId(
             @PathVariable Integer idCurso
     ) {
@@ -33,6 +38,7 @@ public class CursoController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     public ResponseEntity<Curso> registrarCurso(
             @RequestBody Curso curso
     ) {
@@ -42,6 +48,7 @@ public class CursoController {
     }
 
     @PutMapping("/{idCurso}")
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     public ResponseEntity<Curso> actualizarCurso(
             @PathVariable Integer idCurso,
             @RequestBody Curso curso
@@ -55,6 +62,7 @@ public class CursoController {
     }
 
     @DeleteMapping("/{idCurso}")
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     public ResponseEntity<Map<String, String>> eliminarCurso(
             @PathVariable Integer idCurso
     ) {

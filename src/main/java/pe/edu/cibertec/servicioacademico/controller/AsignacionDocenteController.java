@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.*;
 import pe.edu.cibertec.servicioacademico.dto.AsignacionDocenteDto;
 import pe.edu.cibertec.servicioacademico.model.AsignacionDocente;
 import pe.edu.cibertec.servicioacademico.service.AsignacionDocenteService;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 
 import java.util.List;
 import java.util.Map;
@@ -18,6 +20,7 @@ public class AsignacionDocenteController {
     private final AsignacionDocenteService asignacionDocenteService;
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     public ResponseEntity<List<AsignacionDocente>> listarAsignaciones() {
         return ResponseEntity.ok(
                 asignacionDocenteService.listarAsignaciones()
@@ -25,6 +28,7 @@ public class AsignacionDocenteController {
     }
 
     @GetMapping("/{idAsignacion}")
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     public ResponseEntity<AsignacionDocente> obtenerAsignacionPorId(
             @PathVariable Integer idAsignacion
     ) {
@@ -34,6 +38,7 @@ public class AsignacionDocenteController {
     }
 
     @GetMapping("/docente/{idDocente}")
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     public ResponseEntity<List<AsignacionDocente>> listarPorDocente(
             @PathVariable Integer idDocente
     ) {
@@ -43,6 +48,7 @@ public class AsignacionDocenteController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     public ResponseEntity<AsignacionDocente> registrarAsignacion(
             @RequestBody AsignacionDocenteDto dto
     ) {
@@ -52,6 +58,7 @@ public class AsignacionDocenteController {
     }
 
     @PutMapping("/{idAsignacion}")
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     public ResponseEntity<AsignacionDocente> actualizarAsignacion(
             @PathVariable Integer idAsignacion,
             @RequestBody AsignacionDocenteDto dto
@@ -65,6 +72,7 @@ public class AsignacionDocenteController {
     }
 
     @DeleteMapping("/{idAsignacion}")
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     public ResponseEntity<Map<String, String>> eliminarAsignacion(
             @PathVariable Integer idAsignacion
     ) {
@@ -80,6 +88,7 @@ public class AsignacionDocenteController {
     }
 
     @PatchMapping("/{idAsignacion}")
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     public ResponseEntity<AsignacionDocente> actualizarParcialmente(
             @PathVariable Integer idAsignacion,
             @RequestBody AsignacionDocenteDto dto
@@ -89,6 +98,20 @@ public class AsignacionDocenteController {
                         idAsignacion,
                         dto
                 )
+        );
+    }
+
+    @GetMapping("/mis-asignaciones")
+    @PreAuthorize("hasRole('DOCENTE')")
+    public ResponseEntity<List<AsignacionDocente>> listarMisAsignaciones(
+            Authentication authentication
+    ) {
+
+        Integer idDocente =
+                (Integer) authentication.getDetails();
+
+        return ResponseEntity.ok(
+                asignacionDocenteService.listarPorDocente(idDocente)
         );
     }
 }
