@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: servicio-academico-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: servicio-academico
+  template:
+    metadata:
+      labels:
+        app: servicio-academico
+    spec:
+      containers:
+        - name: servicio-academico
+          image: servicio-academico:1.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8082
+          env:
+            - name: CONFIG_SERVER_URL
+              value: http://servidor-configuracion-service:8888
+
+            - name: EUREKA_URL
+              value: http://servidor-discovery-service:8761/eureka/
+
+            - name: DB_URL
+              value: jdbc:mysql://host.docker.internal:3306/lms_academico
+
+            - name: DB_USER
+              value: root
+
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: servicio-academico-secret
+                  key: DB_PASSWORD
+
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: servicio-academico-secret
+                  key: JWT_SECRET
