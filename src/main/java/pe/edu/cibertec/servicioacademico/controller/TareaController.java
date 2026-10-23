@@ -30,7 +30,7 @@ public class TareaController {
     }
 
     @GetMapping("/{idTarea}")
-    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'DOCENTE')")
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'DOCENTE', 'ALUMNO')")
     public ResponseEntity<Tarea> obtenerTareaPorId(
             @PathVariable Integer idTarea,
             Authentication authentication
@@ -54,7 +54,7 @@ public class TareaController {
     }
 
     @GetMapping("/asignacion/{idAsignacion}")
-    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'DOCENTE')")
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'DOCENTE', 'ALUMNO')")
     public ResponseEntity<List<Tarea>> listarPorAsignacion(
             @PathVariable Integer idAsignacion,
             Authentication authentication

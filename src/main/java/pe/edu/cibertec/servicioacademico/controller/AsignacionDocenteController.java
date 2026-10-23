@@ -28,7 +28,7 @@ public class AsignacionDocenteController {
     }
 
     @GetMapping("/{idAsignacion}")
-    @PreAuthorize("hasRole('ADMINISTRADOR')")
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'ALUMNO')")
     public ResponseEntity<AsignacionDocente> obtenerAsignacionPorId(
             @PathVariable Integer idAsignacion
     ) {
